@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopee Affiliate Preview Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #ee4d2d;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Sistem 3 Kolom */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ee4d2d;
+            border-bottom: 2px solid #f5f5f5;
+            padding-bottom: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ee4d2d;
+        }
+
+        button {
+            width: 100%;
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #d13b1d;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            font-family: Courier, monospace;
+            font-size: 0.85rem;
+            background-color: #fafafa;
+            margin-bottom: 10px;
+        }
+
+        /* Tampilan Tab */
+        .tab-container {
+            margin-top: 10px;
+        }
+
+        .tab-menu {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            background: none;
+            color: #666;
+            padding: 10px 15px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: auto;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: #ee4d2d;
+            border-bottom-color: #ee4d2d;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Area Preview & Riwayat */
+        .preview-box {
+            text-align: center;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            border-radius: 6px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            margin-bottom: 15px;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .history-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        .history-item p {
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
+        .history-item-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            width: auto;
+            display: inline-block;
+        }
+
+        .btn-copy { background-color: #26a69a; }
+        .btn-copy:hover { background-color: #1f8b80; }
+        
+        .btn-delete { background-color: #e53935; }
+        .btn-delete:hover { background-color: #c62828; }
+        
+        .btn-clear { background-color: #757575; margin-top: 10px;}
+        .btn-clear:hover { background-color: #616161; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Shopee Affiliate Link Generator</h1>
+        <p>Ubah gambar produk menjadi link promosi yang bisa diklik</p>
+    </header>
+
+    <div class="row">
+        <!-- Kolom 1: Link Shopee -->
+        <div class="column">
+            <h2>1. Link Affiliate</h2>
+            <label for="shopeeLink">Masukkan Link Shopee Affiliate:</label>
+            <input type="text" id="shopeeLink" placeholder="https://shope.ee/xxxxxx atau link produk...">
+            <p style="font-size: 0.8rem; color: #666;">*Pastikan menggunakan link yang sudah di-generate dari dashboard affiliate.</p>
+        </div>
+
+        <!-- Kolom 2: Gambar -->
+        <div class="column">
+            <h2>2. Gambar Produk</h2>
+            <label for="imageLink">Masukkan URL Gambar/Foto:</label>
+            <input type="text" id="imageLink" placeholder="https://cf.shopee.co.id/file/xxxxxx">
+            <button onclick="generateScript()">Generate HTML & Preview</button>
+        </div>
+
+        <!-- Kolom 3: Hasil, Preview & Riwayat (Sistem Tab) -->
+        <div class="column">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="switchTab('tab-generate')">3. Hasil & Preview</button>
+                <button class="tab-btn" onclick="switchTab('tab-history')">📜 Riwayat Edit</button>
+            </div>
+            
+            <!-- Konten Tab Generator -->
+            <div id="tab-generate" class="tab-content active">
+                <label>Live Preview (Bisa Diklik):</label>
+                <div class="preview-box" id="previewArea">
+                    <span style="color: #aaa;">Preview gambar akan muncul di sini setelah Anda klik Generate</span>
+                </div>
+
+                <label>Script HTML (Salin ke Web/Blog):</label>
+                <textarea id="resultCode" readonly placeholder="Kode HTML akan muncul di sini..."></textarea>
+                <button class="btn-copy" onclick="copyCode()">Salin Kode</button>
+            </div>
+
+            <!-- Konten Tab Riwayat -->
+            <div id="tab-history" class="tab-content">
+                <label>Daftar Link yang Pernah Dibuat:</label>
+                <div class="history-list" id="historyArea">
+                    <p style="color: #aaa; text-align: center; padding-top: 20px;">Belum ada riwayat pembuatan.</p>
+                </div>
+                <button class="btn-clear btn-small" onclick="clearAllHistory()">Hapus Semua Riwayat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load riwayat saat halaman pertama kali dibuka
+    document.addEventListener("DOMContentLoaded", function() {
+        renderHistory();
+    });
+
+    function switchTab(tabId) {
+        // Hilangkan kelas active di semua tab button dan content
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        // Aktifkan tab yang dipilih
+        event.currentTarget.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function generateScript() {
+        const shopeeLink = document.getElementById('shopeeLink').value.trim();
+        const imageLink = document.getElementById('imageLink').value.trim();
+        const previewArea = document.getElementById('previewArea');
+        const resultCode = document.getElementById('resultCode');
+
+        if (!shopeeLink || !imageLink) {
+            alert('Harap isi Link Shopee dan URL Gambar terlebih dahulu!');
+            return;
+        }
+
+        // Pembuatan Template Script
+        const htmlTemplate = `<a href="${shopeeLink}" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none;">\n  <img src="${imageLink}" alt="Beli di Shopee" style="width: 100%; max-width: 400px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); transition: transform 0.2s;">\n</a>`;
+
+        // Output ke UI
+        resultCode.value = htmlTemplate;
+        previewArea.innerHTML = htmlTemplate;
+
+        // Simpan ke Riwayat (Local Storage)
+        saveToHistory(shopeeLink, imageLink, htmlTemplate);
+    }
+
+    function copyCode() {
+        const resultCode = document.getElementById('resultCode');
+        if (!resultCode.value) {
+            alert('Belum ada kode yang di-generate!');
+            return;
+        }
+        resultCode.select();
+        document.execCommand('copy');
+        alert('Kode HTML berhasil disalin!');
+    }
+
+    // Fungsi-fungsi Management Riwayat (Local Storage)
+    function saveToHistory(shopee, image, html) {
+        let history = JSON.parse(localStorage.getItem('shopeeHistory')) || [];
+        
+        // Data baru yang akan disimpan
+        const newItem = {
+            id: Date.now(),
+            date: new Date().toLocaleString('id-ID'),
+            shopeeLink: shopee,
+            imageLink: image,
+            htmlCode: html
+        };
+
+        // Taruh di urutan paling atas
+        history.unshift(newItem);
+        localStorage.setItem('shopeeHistory', JSON.stringify(history));
+        
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const historyArea = document.getElementById('historyArea');
+        let history = JSON.parse(localStorage.getItem('shopeeHistory')) || [];
+
+        if (history.length === 0) {
+            historyArea.innerHTML = `<p style="color: #aaa; text-align: center; padding-top: 20px;">Belum ada riwayat pembuatan.</p>`;
+            return;
+        }
+
+        let htmlContent = '';
+        history.forEach(item => {
+            htmlContent += `
+                <div class="history-item">
+                    <strong style="color: #ee4d2d; font-size: 0.75rem;">${item.date}</strong>
+                    <p style="margin-top:5px;"><strong>Link Shopee:</strong> <a href="${item.shopeeLink}" target="_blank" style="color:#0066cc;">${item.shopeeLink}</a></p>
+                    <p><strong>URL Gambar:</strong> ${item.imageLink.substring(0, 50)}...</p>
+                    <div class="history-item-buttons">
+                        <button class="btn-small btn-copy" onclick="copySpecificCode(\`${btoa(unescape(encodeURIComponent(item.htmlCode)))}\`)">Salin Kode</button>
+                        <button class="btn-small btn-delete" onclick="deleteHistoryItem(${item.id})">Hapus</button>
+                    </div>
+                </div>
+            `;
+        });
+        historyArea.innerHTML = htmlContent;
+    }
+
+    function copySpecificCode(encodedHtml) {
+        // Dekode kembali text HTML dari base64 aman
+        const decodedHtml = decodeURIComponent(escape(atob(encodedHtml)));
+        const el = document.createElement('textarea');
+        el.value = decodedHtml;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Kode HTML dari riwayat berhasil disalin!');
+    }
+
+    function deleteHistoryItem(id) {
+        let history = JSON.parse(localStorage.getItem('shopeeHistory')) || [];
+        history = history.filter(item => item.id !== id);
+        localStorage.setItem('shopeeHistory', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function clearAllHistory() {
+        if (confirm('Apakah Anda yakin ingin menghapus seluruh riwayat?')) {
+            localStorage.removeItem('shopeeHistory');
+            renderHistory();
+        }
+    }
+</script>
+
+</body>
+</html>
